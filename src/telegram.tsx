@@ -48,6 +48,7 @@ export const applyTelegramTheme = (theme: any) => {
   // Additional CSS styles for Night Mode (dark mode)
   const applyNightModeStyles = () => {
     // Apply dark mode-specific styles
+    document.documentElement.style.setProperty('--bg-color', '#21242c'); // Darker card background
     document.documentElement.style.setProperty('--card-bg-color', '#2c2c2e'); // Darker card background
     document.documentElement.style.setProperty('--button-bg-color', '#3a3a3c'); // Darker button background
     document.documentElement.style.setProperty('--button-text-color', '#ffffff'); // Light text color on buttons
@@ -60,6 +61,7 @@ export const applyTelegramTheme = (theme: any) => {
   // Additional CSS styles for Day Mode (light mode)
   const applyDayModeStyles = () => {
     // Apply light mode-specific styles
+    document.documentElement.style.setProperty('--bg-color', '#ffffff'); // Light card background
     document.documentElement.style.setProperty('--card-bg-color', '#ffffff'); // Light card background
     document.documentElement.style.setProperty('--button-bg-color', '#f1f1f1'); // Light button background
     document.documentElement.style.setProperty('--button-text-color', '#000000'); // Dark text color on buttons
