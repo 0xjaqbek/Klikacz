@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ref, set, update, push } from "firebase/database"; // Firebase functions for database
+import { ref, set, update, get } from "firebase/database"; // Firebase functions for database
 import { TonConnectButton } from "@tonconnect/ui-react";
 import { useTonConnect } from "../hooks/useTonConnect";
 import { Card } from "./styled/styled";
@@ -10,13 +10,28 @@ import { database } from "../firebaseConfig"; // Firebase database initializatio
 export function Counter() {
   const { connected, wallet } = useTonConnect(); // Get wallet connection status and address
   const { username, userId } = initializeTelegram(); // Get the username and userId from Telegram
-  
+
   const [tapCount, setTapCount] = useState(0); // State to track the tap count
   const [animate, setAnimate] = useState(false); // State to trigger animation
 
+  useEffect(() => {
+    // Load the current tap count from Firebase when the component mounts
+    const fetchUserData = async () => {
+      const userRef = ref(database, `users/${userId}`);
+      const snapshot = await get(userRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setTapCount(data.tapCount || 0); // Set the tap count if it exists in the database
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
   // Function to handle the tap event
   const handleTap = async () => {
-    setTapCount(tapCount + 1); // Increment the tap count
+    const newTapCount = tapCount + 1; // Increment the tap count
+    setTapCount(newTapCount); // Update local state
 
     // Trigger animation
     setAnimate(true);
@@ -26,25 +41,23 @@ export function Counter() {
       setAnimate(false);
     }, 100);
 
-    // Prepare user data to be stored in Firebase
-    const tapData = {
+    // Prepare user data to be stored/updated in Firebase
+    const userData = {
       username,
-      userId,
-      tapCount: tapCount + 1,
-      timestamp: new Date().toISOString(), // Get current time (server time in ISO format)
-      walletAddress: connected ? wallet : "Not connected", // Add wallet address if connected
+      tapCount: newTapCount,
+      lastTapTimestamp: new Date().toISOString(), // Get current time (server time in ISO format)
+      walletAddress: connected ? wallet : null, // Update wallet address if connected
     };
 
-    // Save the tap data in Firebase Realtime Database
-    const tapsRef = ref(database, `users/${userId}/taps`); // Reference to user's tap data in database
-    const newTapRef = push(tapsRef); // Create a new entry for each tap
+    // Update the user data in Firebase Realtime Database
+    const userRef = ref(database, `users/${userId}`);
 
-    // Write the new tap data to the database
-    await set(newTapRef, tapData);
+    // Write the updated user data to the database
+    await update(userRef, userData);
   };
 
   useEffect(() => {
-    // Update the user's data in Firebase when wallet is connected
+    // Update the user's wallet address in Firebase when wallet is connected
     if (connected) {
       const userRef = ref(database, `users/${userId}`);
       update(userRef, {
