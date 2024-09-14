@@ -3,3 +3,45 @@
   --tg-theme-button-color: #2eaddc;
   --tg-theme-button-text-color: white;
 }
+
+.circle {
+  width: 50vw;
+  height: 50vw;
+  border-radius: 50%;
+  background-color: #3498db;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  user-select: none;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/* Animation for the tap effect */
+@keyframes tapAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95); /* 5% smaller */
+  }
+  100% {
+    transform: scale(1); /* Back to original size */
+  }
+}
+
+/* Class that triggers the animation */
+.animate {
+  animation: tapAnimation 0.1s ease;
+}
+
+/* Styling for the tap count */
+.tap-count {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.5rem;
+}
