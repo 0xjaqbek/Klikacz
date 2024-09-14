@@ -1,7 +1,18 @@
 :root {
-  --tg-theme-bg-color: #efeff3;
-  --tg-theme-button-color: #2eaddc;
-  --tg-theme-button-text-color: white;
+  /* Default values (Day Mode) */
+  --card-bg-color: #ffffff;
+  --button-bg-color: #f1f1f1;
+  --button-text-color: #000000;
+  --circle-bg-color: #e0e0e0;
+  --tap-count-color: #333333;
+}
+
+/* Style elements using CSS variables */
+
+.Card {
+  background-color: var(--card-bg-color);
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .circle {
@@ -39,9 +50,18 @@
   animation: tapAnimation 0.1s ease;
 }
 
-/* Styling for the tap count */
+.button {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 .tap-count {
-  text-align: center;
-  margin-top: 10px;
+  color: var(--tap-count-color);
   font-size: 1.5rem;
+  margin-top: 10px;
 }
