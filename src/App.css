@@ -1,5 +1,5 @@
 :root {
-  background-color: #21242c;
+  background-color: var(--bg-color) ;
   --tg-theme-button-color: #2eaddc;
   --tg-theme-button-text-color: white;
   /* Default values (Day Mode) */
